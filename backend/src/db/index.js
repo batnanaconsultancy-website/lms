@@ -1,39 +1,32 @@
-const { Pool } = require('pg');
-require('dotenv').config();
+const { Pool } = require("pg");
+require("dotenv").config();
 
-// Neon PostgreSQL — uses standard pg driver with SSL
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false, // Required for Neon
-  },
-  max: 10,
+  ssl: { rejectUnauthorized: false },
+  max: 5,
   idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 5000,
+  connectionTimeoutMillis: 20000,
 });
 
-pool.on('error', (err) => {
-  console.error('Unexpected database pool error:', err);
+pool.on("connect", () => {
+  if (process.env.NODE_ENV === "development") console.log("✅ DB connected");
 });
 
-/**
- * Execute a parameterised SQL query.
- * Usage: const { rows } = await query('SELECT * FROM users WHERE id = $1', [id]);
- */
+pool.on("error", (err) => {
+  console.error("DB pool error:", err.message);
+});
+
 async function query(text, params) {
-  const start = Date.now();
-  const res = await pool.query(text, params);
-  const duration = Date.now() - start;
-  if (process.env.NODE_ENV === 'development') {
-    console.log('DB query', { text: text.slice(0, 80), duration, rows: res.rowCount });
+  const client = await pool.connect();
+  try {
+    const res = await client.query(text, params);
+    return res;
+  } finally {
+    client.release();
   }
-  return res;
 }
 
-/**
- * Get a client for transactions.
- * Always release the client in a finally block.
- */
 async function getClient() {
   return pool.connect();
 }

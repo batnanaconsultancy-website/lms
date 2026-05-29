@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useAuthStore } from '../../hooks/useAuth';
+import { useAuthStore } from '../../../hooks/useAuth';
 
 export default function LoginPage() {
   const [form, setForm] = useState({ email: '', password: '' });

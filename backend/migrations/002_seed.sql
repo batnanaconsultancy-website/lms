@@ -4,14 +4,14 @@
 
 -- Admin user (password: Admin1234!)
 INSERT INTO users (email, password_hash, full_name, role) VALUES
-('admin@amsterdam.tech',
+('admin@codeforge.dev',
  crypt('Admin1234!', gen_salt('bf')),
  'Admin User', 'admin')
 ON CONFLICT DO NOTHING;
 
 -- Instructor (password: Instructor1!)
 INSERT INTO users (email, password_hash, full_name, role, bio) VALUES
-('instructor@amsterdam.tech',
+('instructor@codeforge.dev',
  crypt('Instructor1!', gen_salt('bf')),
  'Jane Doe', 'instructor',
  'Senior software engineer with 10 years of experience in web development.')
@@ -19,7 +19,7 @@ ON CONFLICT DO NOTHING;
 
 -- Student (password: Student123!)
 INSERT INTO users (email, password_hash, full_name, role) VALUES
-('student@amsterdam.tech',
+('student@codeforge.dev',
  crypt('Student123!', gen_salt('bf')),
  'John Smith', 'student')
 ON CONFLICT DO NOTHING;

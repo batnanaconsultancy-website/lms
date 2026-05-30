@@ -1,5 +1,5 @@
-const { Pool } = require("pg");
-require("dotenv").config();
+const { Pool } = require('pg');
+require('dotenv').config();
 
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -9,12 +9,12 @@ const pool = new Pool({
   connectionTimeoutMillis: 20000,
 });
 
-pool.on("connect", () => {
-  if (process.env.NODE_ENV === "development") console.log("✅ DB connected");
+pool.on('connect', () => {
+  if (process.env.NODE_ENV === 'development') console.log('✅ DB connected');
 });
 
-pool.on("error", (err) => {
-  console.error("DB pool error:", err.message);
+pool.on('error', (err) => {
+  console.error('DB pool error:', err.message);
 });
 
 async function query(text, params) {
